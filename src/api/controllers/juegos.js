@@ -1,55 +1,61 @@
-const Comida = require("../models/comida.models");
+const Juegos = require("../models/juegos");
 
-const getComidas = async (req, res) => {
+const getJuegos = async (req, res) => {
   try {
-    const allComidas = await Comida.find();
-    return res.status(200).json(allComidas);
+    const allJuegos = await Juegos.find();
+
+    return res.status(200).json(allJuegos);
+
   } catch (error) {
     return res.status(500).json(error);
   }
 };
-const getComidasById = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const comida = await Comida.findById(id);
-    if (!comida) {
-      return res.status(404).json({ message: "no tenemos comidas con ese id" });
-    }
-    return res.status(200).json(comida);
-  } catch (error) {
-    return res.status(500).json(error);
-  }
-};
-const postComida = async (req, res) => {
-  try {
-    const newComida = new Comida(req.body);
-    const createdComida = await newComida.save();
-    return res.status(201).json(createdComida);
-  } catch (error) {
-    return res.status(500).json(error);
-  }
-};
-const putComida = async (req, res) => {
+const getJuegoById = async (req, res) => {
   try {
     const { id } = req.params;
-    const putComida = new Comida(req.body);
-    putComida._id = id;
-    const updatedComida = await Comida.findByIdAndUpdate(id, putComida, {
-      new: true,
-    });
-    return res.status(200).json(updatedComida);
+    const juegoID = await Juegos.findOne({ _id: id });
+
+    return res.status(200).json(juegoID); 
+  } catch {
+    return res.json(error);
+  }
+};
+const createJuego = async (req, res) => {
+  try {
+    const newJuego = new Juegos(req.body);
+    const createdJuego = await newJuego.save();
+
+    return res.status(201).json(createdJuego);
+
   } catch (error) {
     return res.status(500).json(error);
   }
 };
-const deleteComida = async(req,res) => {
+const editJuego = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const juegoBody = new Juegos(req.body);
+    juegoBody._id = id;
+
+    const updatedJuego = await Juegos.findByIdAndUpdate(id, juegoBody, 
+      { new: true }
+      );
+
+    return res.status(200).json(updatedJuego);
+
+  } catch (error) {
+    return res.status(500).json(error);
+  }
+};
+const deleteJuego = async(req,res) => {
     try {
         const {id} = req.params;
-        const deleteComida = await Comida.findByIdAndDelete(id);
-        return res.status(200).json(deleteComida)
+        const deleteJuego = await Juegos.findByIdAndDelete(id);
+        
+        return res.status(200).json(deleteJuego)
     } catch (error) {
         return res.status(500).json(error)
     }
 }
 
-module.exports = { getComidas, getComidasById, postComida , putComida, deleteComida};
+module.exports = { getJuegos, getJuegoById, createJuego , editJuego, deleteJuego};
