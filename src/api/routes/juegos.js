@@ -1,15 +1,12 @@
 const express = require("express");
-const {getComidas,postComida,getComidasById,putComida,deleteComida} = require("../controllers/comida.controllers")
+const {getJuegos, createJuego, editJuego, deleteJuego, getJuegoById} = require("../controllers/juegos");
 
-const comidaRoutes = express.Router();
+const router = express.Router();
 
-comidaRoutes.get("/id/:id", getComidasById)
-comidaRoutes.get("/",getComidas )
+router.get("/", getJuegos);
+router.post("/", createJuego);
+router.put("/:id", editJuego);
+router.delete("/:id", deleteJuego);
+router.get("/:id", getJuegoById);
 
-comidaRoutes.post("/", postComida)
-
-comidaRoutes.put("/:id", putComida)
-
-comidaRoutes.delete("/:id",deleteComida)
-
-module.exports = comidaRoutes;
+module.exports = router;
